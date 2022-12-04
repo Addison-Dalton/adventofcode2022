@@ -1,5 +1,5 @@
-import fs from 'fs';
-const input = fs.readFileSync(__dirname + '/input.txt', 'utf8') as string;
+import { getInputFile, logResults } from '../utils';
+const input = getInputFile('day2');
 
 type GameOption = {
   keys: string[];
@@ -28,16 +28,6 @@ const determineRoundScore = (p1Index: number, p2Index: number) => {
 const getGameOptionIndex = (key: string) =>
   gameOptions.findIndex((option) => option.keys.includes(key));
 
-const part1TotalScore = () =>
-  gameRounds.reduce((currentScore, round) => {
-    // hacky, but the format of the round is always player 1 + " " + player 2 (ex: "A Z")
-    const p1Index = getGameOptionIndex(round[0]);
-    const p2Index = getGameOptionIndex(round[2]);
-
-    const roundScore = determineRoundScore(p1Index, p2Index);
-    return currentScore + roundScore + gameOptions[p2Index].score;
-  }, 0);
-
 // This uses similar logic to determineRoundScore. It will determine
 // the correct index (for p2Index) against p1Index to achieve a certain
 // match result.
@@ -50,10 +40,22 @@ const getP2Index = (p1Index: number, outcomeKey: string) => {
   return (p1Index + 1) % 3;
 };
 
-const part2TotalScore = () =>
+const part1 = () =>
+  gameRounds.reduce((currentScore, round) => {
+    // hacky, but the format of the round is always player 1 + " " + player 2 (ex: "A Z")
+    const p1Index = getGameOptionIndex(round[0]);
+    const p2Index = getGameOptionIndex(round[2]);
+
+    const roundScore = determineRoundScore(p1Index, p2Index);
+    return currentScore + roundScore + gameOptions[p2Index].score;
+  }, 0);
+
+const part2 = () =>
   gameRounds.reduce((currentScore, round) => {
     const p1Index = getGameOptionIndex(round[0]);
     const p2Index = getP2Index(p1Index, round[2]);
     const roundScore = determineRoundScore(p1Index, p2Index);
     return currentScore + roundScore + gameOptions[p2Index].score;
   }, 0);
+
+logResults(part1, part2);

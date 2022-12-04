@@ -1,5 +1,5 @@
-import fs from 'fs';
-const input = fs.readFileSync(__dirname + '/input.txt', 'utf8') as string;
+import { getInputFile, logResults } from '../utils';
+const input = getInputFile('day3');
 
 const LOWERCASE_CHAR_CODE_OFFSET = 96;
 const UPPERCASE_CHAR_CODE_OFFSET = 38;
@@ -31,14 +31,14 @@ const getPriority = (item: string) => {
 const getIntersectionPriority = (intersection: string[]) =>
   intersection.reduce((acc, value) => acc + getPriority(value), 0);
 
-const part1Priorities = () =>
+const part1 = () =>
   rucksacks.reduce((currentPriority, rucksack) => {
     const [compartment1, compartment2] = getCompartments(rucksack);
     const intersection = getIntersection([compartment1, compartment2]);
     return currentPriority + getIntersectionPriority(intersection);
   }, 0);
 
-const part2Priorities = () => {
+const part2 = () => {
   let totalPriority = 0;
   for (let i = 0; i < rucksacks.length; i += 3) {
     totalPriority += getIntersectionPriority(
@@ -48,3 +48,4 @@ const part2Priorities = () => {
   return totalPriority;
 };
 
+logResults(part1, part2);
