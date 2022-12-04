@@ -1,6 +1,6 @@
 // Note: Solution was modified following the part two prompt to accomodate the requirements of
 // both challenges.
-const fs = require('fs');
+import fs from 'fs';
 const input = fs.readFileSync(__dirname + '/input.txt', 'utf8') as string;
 
 // an array of the total calories of each elf
@@ -16,3 +16,4 @@ const maxCalories = arrayOfCalories[0];
 const topThreeCalories = arrayOfCalories
   .slice(0, 3)
   .reduce((acc, calorie) => acc + calorie);
+
